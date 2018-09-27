@@ -47,9 +47,6 @@ public:
 	Brick() {}
 	Brick(const vector<int>&);
 
-	// operators
-	bool operator==(const Brick&) const;
-
 	// getter methods
 	int get_value() const;
 	int get_mean() const { return this->get_value() / this->size(); }
@@ -271,11 +268,6 @@ Brick::Brick(const vector<int>& ints) // constructor
 		data[ints[i]] = ints[i + 1];
 		i += 2;
 	}
-}
-
-bool Brick::operator==(const Brick& b) const
-{
-	return data == b.get_data();
 }
 
 int Brick::get_value() const
