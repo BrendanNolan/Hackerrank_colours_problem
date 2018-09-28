@@ -49,7 +49,7 @@ public:
 
 	// getter methods
 	int get_value() const;
-	int get_mean() const { return this->get_value() / this->size(); }
+	int get_mean() const { return get_value() / size(); }
 	const map<int, int>& get_data() const { return data; }
 
 	// other methods
