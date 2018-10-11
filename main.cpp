@@ -97,7 +97,7 @@ vector<vector<Brick>::size_type> sesqui_sort_Brick_indices(
 
 // Board class-----------------------------------------------------------------
 
-// A Board is implemented as a vector<vector<char>> whose jth element encodes
+// A Board is implemented as a vector< vector<char> > whose jth element encodes
 // exactly which spaces on the jth column of the board are occupied ('o'
 // signifies "occupied" and 'e' signifies "empty").
 
@@ -119,9 +119,9 @@ public:
 	// the Board by marking as 'o' (occupied) the spaces on the board covered 
 	// by the Brick's tokens and adding the Brick's value (the sum of the 
 	// values of its coloured tokens) to the score of the board.
-	// The returned vector<vector<int>> records in its jth element the Bricks 
+	// The returned vector< vector<int> > records in its jth element the Bricks 
 	// which were added to column j of the board (for 0 <= j < M).
-	vector<vector<int>> play(
+	vector< vector<int> > play(
 		const vector<Brick>& Bricks,
 		vector<vector<Brick>::size_type> Brick_sorter(const vector<Brick>&));
 	
@@ -132,7 +132,7 @@ private:
 	int N;
 	int M;
 
-	vector<vector<char>> filled_spaces;
+	vector< vector<char> > filled_spaces;
 	// filled_spaces[j][i] == 'e'  
 	// means that the ith colour on the jth column 
 	// of the board is empty i.e. not covered by a Brick.
@@ -182,9 +182,9 @@ int main() {
 	// Using the various greedy strategies, add Bricks to the board and record 
 	// the score and the placement of the Bricks, clearing the board before 
 	// testing a new strategy. Place the paired results in results_vec.
-	vector<pair<int, vector<vector<int>>>> results_vec;
+	vector< pair< int, vector< vector<int> > > > results_vec;
 	Board brd(N, M);
-	vector<vector<int>> record;
+	vector< vector<int> > record;
 	int scr;
 	for (vector<sorting_ptr>::size_type i = 0; i < sorting_ptrs.size(); ++i)
 	{
@@ -295,7 +295,7 @@ vector<vector<Brick>::size_type> abs_sort_Brick_indices(
 	typedef vector<Brick>::size_type st;
 
 	st size = Bricks.size();
-	vector<pair<int, st>> sorting_vec(size);
+	vector< pair<int, st> > sorting_vec(size);
 
 	for (st i = 0; i < size; ++i)
 	{
@@ -332,7 +332,7 @@ vector<vector<Brick>::size_type> mean_sort_Brick_indices(
 	typedef vector<Brick>::size_type st;
 
 	st size = Bricks.size();
-	vector<pair<int, st>> sorting_vec(size);
+	vector< pair<int, st> > sorting_vec(size);
 
 	for (st i = 0; i < size; ++i)
 	{
@@ -353,7 +353,7 @@ vector<vector<Brick>::size_type> sesqui_sort_Brick_indices(
 	typedef vector<Brick>::size_type st;
 
 	st size = Bricks.size();
-	vector<pair<int, st>> sorting_vec(size);
+	vector< pair<int, st> > sorting_vec(size);
 
 	for (st i = 0; i < size; ++i)
 	{
@@ -393,11 +393,11 @@ void Board::clear()
 		filled_spaces[j] = es;
 }
 
-vector<vector<int>> Board::play(
+vector< vector<int> > Board::play(
 	const vector<Brick>& Bricks,
 	vector<vector<Brick>::size_type> Brick_sorter(const vector<Brick>&))
 {
-	vector<vector<int>> record(M);
+	vector< vector<int> > record(M);
 
 	vector<Brick>::size_type B = Bricks.size();
 	vector<vector<Brick>::size_type> sorted_indices = Brick_sorter(Bricks);
