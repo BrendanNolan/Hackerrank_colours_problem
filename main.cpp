@@ -72,14 +72,15 @@ int main()
 	
 	// Print the score of the best strategy followed by the best strategy 
 	// itself
-	std::cout << scr << std::endl;
+	std::cout << scr << '\n';
 	for (int i = 0; i < M; ++i)
 	{
 		if (!record[i].empty())
+		{
 			iter_print(record[i].begin(), record[i].end());
-		std::cout << std::endl;
+			std::cout << '\n';
+		}
 	}
 	
-
 	return 0;
 }
