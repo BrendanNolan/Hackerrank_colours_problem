@@ -8,6 +8,8 @@ std::istream& Brick::read(std::istream& is)
 	std::string s; 
 	if (std::getline(is, s))
 	{
+		// the line below calls the std::map<int, int> copy constructor
+		// which takes an rvalue reference
 		msp = new std::map<int, int>(str_to_map(s));
 	}
 	return is;

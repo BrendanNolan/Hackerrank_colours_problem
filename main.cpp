@@ -44,7 +44,7 @@ int main()
 	Board brd(N, M);
 	std::vector< std::vector<int> > record;
 	int scr;
-	for (std::vector<sorting_ptr>::size_type i = 0; i < 1; //sorting_ptrs.size(); 
+	for (std::vector<sorting_ptr>::size_type i = 0; i < sorting_ptrs.size(); 
 		 ++i) 
 	{
 		record = brd.play(bricks, sorting_ptrs[i]);
