@@ -20,6 +20,16 @@ int main()
 	int N, M, B;
 	infile >> N >> M >> B; 
 
+	// make sure that the first call to Brick::read reads the second line of
+	// infile, rather than whatever follows the first three entries on the first
+	// line of infile
+	char c;
+	while (infile.get(c))
+	{
+		if (c == '\n')
+			break;
+	}
+
 	std::vector<Brick> bricks;
 	Brick brick;
 	while(brick.read(infile))
