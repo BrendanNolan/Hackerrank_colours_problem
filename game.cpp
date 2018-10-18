@@ -1,23 +1,23 @@
 #include "game.h"
 
-// Brick methods---------------------------------------------------------------
 
-Brick::Brick(const std::vector<int>& ints) // constructor
+// Brick methods ===============================================================
+
+std::istream& Brick::read(std::istream& is) 
 {
-	std::vector<int>::size_type sz = ints.size();
-	std::vector<int>::size_type i = 0;
-	while (i != sz)
+	std::string s; 
+	if (std::getline(is, s))
 	{
-		data[ints[i]] = ints[i + 1];
-		i += 2;
+		msp = new std::map<int, int>(str_to_map(s));
 	}
+	return is;
 }
 
 int Brick::get_value() const
 {
 	int val = 0;
-	std::map<int, int>::const_iterator iter = data.begin();
-	const std::map<int, int>::const_iterator fin = data.end();
+	std::map<int, int>::const_iterator iter = msp->begin();
+	const std::map<int, int>::const_iterator fin = msp->end();
 
 	while (iter != fin)
 	{
@@ -27,10 +27,73 @@ int Brick::get_value() const
 	return val;
 }
 
-// End of Brick methods--------------------------------------------------------
+// End of Brick methods ========================================================
 
 
-// Functions related to Brick class--------------------------------------------
+// Board methods ===============================================================
+
+Board::Board(int n, int m) : score(0), N(n), M(m)
+{
+	std::vector<char> es(N, 'e');
+	// the 'e' signifies empty; 
+	// 'o' will signify occupied
+
+	for (int j = 0; j < M; ++j)
+		filled_spaces.push_back(es);
+}
+
+void Board::clear()
+{
+	score = 0;
+
+	std::vector<char> es(N, 'e');
+	for (int j = 0; j < M; ++j)
+		filled_spaces[j] = es;
+}
+
+std::vector< std::vector<int> > Board::play(
+	const std::vector<Brick>& Bricks,
+	std::vector<std::vector<Brick>::size_type> Brick_sorter(
+		const std::vector<Brick>&))
+{
+	std::vector< std::vector<int> > record(M);
+
+	std::vector<Brick>::size_type B = Bricks.size();
+	std::vector<std::vector<Brick>::size_type> sorted_indices = Brick_sorter(
+		Bricks);
+	for (std::vector<Brick>::size_type b = 0; b < B; ++b)
+	{
+		const Brick& current = Bricks[sorted_indices[b]];
+		const std::map<int, int>::const_iterator beg = current.begin();
+		const std::map<int, int>::const_iterator fin = current.end();
+
+		for (int j = 0; j < M; ++j)
+		{
+			std::map<int, int>::const_iterator it = beg;
+			while (it != fin && filled_spaces[j][it->first] == 'e')
+				++it;
+			if (it == fin) // true if column j has room for `current`
+			{
+				it = beg;
+				while (it != fin)
+				{
+					filled_spaces[j][it->first] = 'o';
+					score += it->second;
+					++it;
+				}
+				record[j].push_back(sorted_indices[b]);
+				break;
+			}
+		}
+	}
+
+	return record;
+}
+
+// End of Board methods ========================================================
+
+
+// Functions related to Brick class---------------------------------------------
 
 std::vector<std::vector<Brick>::size_type> abs_sort_Brick_indices(
 	const std::vector<Brick>& Bricks)
@@ -112,72 +175,12 @@ std::vector<std::vector<Brick>::size_type> sesqui_sort_Brick_indices(
 	return ret;
 }
 
-// End of functions related to Brick class-------------------------------------
+// End of functions related to Brick class--------------------------------------
 
-
-// Board methods---------------------------------------------------------------
-
-Board::Board(int n, int m) : score(0), N(n), M(m)
-{
-	std::vector<char> es(N, 'e');
-	// the 'e' signifies empty; 
-	// 'o' will signify occupied
-
-	for (int j = 0; j < M; ++j)
-		filled_spaces.push_back(es);
-}
-
-void Board::clear()
-{
-	score = 0;
-
-	std::vector<char> es(N, 'e');
-	for (int j = 0; j < M; ++j)
-		filled_spaces[j] = es;
-}
-
-std::vector< std::vector<int> > Board::play(
-	const std::vector<Brick>& Bricks,
-	std::vector<std::vector<Brick>::size_type> Brick_sorter(const std::vector<Brick>&))
-{
-	std::vector< std::vector<int> > record(M);
-
-	std::vector<Brick>::size_type B = Bricks.size();
-	std::vector<std::vector<Brick>::size_type> sorted_indices = Brick_sorter(Bricks);
-	for (std::vector<Brick>::size_type b = 0; b < B; ++b)
-	{
-		const Brick& current = Bricks[sorted_indices[b]];
-		const std::map<int, int>::const_iterator beg = current.begin();
-		const std::map<int, int>::const_iterator fin = current.end();
-
-		for (int j = 0; j < M; ++j)
-		{
-			std::map<int, int>::const_iterator it = beg;
-			while (it != fin && filled_spaces[j][it->first] == 'e')
-				++it;
-			if (it == fin) // true if column j has room for `current`
-			{
-				it = beg;
-				while (it != fin)
-				{
-					filled_spaces[j][it->first] = 'o';
-					score += it->second;
-					++it;
-				}
-				record[j].push_back(sorted_indices[b]);
-				break;
-			}
-		}
-	}
-
-	return record;
-}
-
-// End of Board methods--------------------------------------------------------
 
 // Utility functions------------------------------------------------------------
 
-std::vector<int> str_to_intvec(const std::string& str)
+std::map<int, int> str_to_map(const std::string& str)
 {
 	std::vector<int> intvec;
 	std::string::size_type i = 0;
@@ -195,17 +198,19 @@ std::vector<int> str_to_intvec(const std::string& str)
 			i = j;
 		}
 	}
-	return intvec;
+	
+	std::map<int, int> ret;
+	std::vector<int>::size_type sz = intvec.size();
+	std::vector<int>::size_type k = 0; 
+	while (k != sz)
+	{
+		ret[intvec[k]] = intvec[k + 1];
+		k += 2;
+	}
+
+	return ret;
 }
 
-template <typename T>
-void iter_print(T beg, T fin)
-{
-	while (beg != fin)
-	{
-		cout << *beg << " ";
-		++beg;
-	}
-}
+// construct a std::map<int, int> from an istream and return a pointer to it. 
 
 // End of utility functions-----------------------------------------------------

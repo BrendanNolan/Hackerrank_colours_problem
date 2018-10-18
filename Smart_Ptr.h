@@ -14,7 +14,7 @@ template <typename T>
 T* clone(const T* p)
 {
     return p->clone();    
-}
+} 
 
 // End definitions of global utility functions ---------------------------------
 

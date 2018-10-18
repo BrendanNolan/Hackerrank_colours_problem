@@ -11,27 +11,19 @@
 
 int main() 
 {
-	// construct a std::vector<string> whose elements are the lines of input
-	std::vector<std::string> input_strings;
-	std::string s;
-	while (getline(std::cin, s))
-		input_strings.push_back(s);
+	std::ifstream infile("input.txt");
 
-	// Deduce the values of N, M, and B
-	std::vector<int> general_info = str_to_intvec(input_strings[0]);
-	int N = general_info[0]; // number of colours i.e. number of rows
-	int M = general_info[1]; // number of columns
-	int B = general_info[2]; // number of available bricks     
+	// Initialise integers N, M, B to store the number of rows on the board, 
+	// the number of columns on the board, and 
+	// the number of available Bricks
+	// respectively.
+	int N, M, B;
+	infile >> N >> M >> B; 
 
-	std::vector<std::string>::size_type sz = input_strings.size();
-
-	// Construct the std::vector of Bricks to be added to the Board
-	std::vector<Brick> Bricks;
-	for (std::vector<std::string>::size_type i = 1; i < sz; ++i)
-	{
-		Brick next_Brick(str_to_intvec(input_strings[i]));
-		Bricks.push_back(next_Brick);
-	}
+	std::vector<Brick> bricks;
+	Brick brick;
+	while(brick.read(infile))
+		bricks.push_back(brick);
 
 	// We have defined several functions (all ending in `sort_Brick_indices`)
 	// which will allow us to add Bricks to the Board in various greedy orders. 
@@ -47,13 +39,15 @@ int main()
 	// Using the various greedy strategies, add Bricks to the board and record 
 	// the score and the placement of the Bricks, clearing the board before 
 	// testing a new strategy. Place the paired results in results_vec.
-	std::vector< std::pair< int, std::vector< std::vector<int> > > > results_vec;
+	std::vector< std::pair< int, std::vector< std::vector<int> > > > 
+		results_vec;
 	Board brd(N, M);
 	std::vector< std::vector<int> > record;
 	int scr;
-	for (std::vector<sorting_ptr>::size_type i = 0; i < sorting_ptrs.size(); ++i)
+	for (std::vector<sorting_ptr>::size_type i = 0; i < 1; //sorting_ptrs.size(); 
+		 ++i) 
 	{
-		record = brd.play(Bricks, sorting_ptrs[i]);
+		record = brd.play(bricks, sorting_ptrs[i]);
 		scr = brd.get_score();
 		results_vec.push_back(make_pair(scr, record));
 		brd.clear();
@@ -75,6 +69,7 @@ int main()
 			iter_print(record[i].begin(), record[i].end());
 		std::cout << std::endl;
 	}
+	
 
 	return 0;
 }
