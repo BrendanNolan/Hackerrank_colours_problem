@@ -9,9 +9,9 @@
 
 // Brick class =================================================================
 
-// A Brick is implemented as a std::map<int, int>. The key is the colour of a 
-// coloured token in the Brick, the associated value is the number of points 
-// attached to the coloured token. 
+// A Brick is implemented as a (Smart_Ptr to a) std::map<int, int>. The key is 
+// the colour of a coloured token in the Brick, the associated value is the 
+// number of points attached to the coloured token. 
 class Brick {
 public:
 	// constructors
@@ -39,9 +39,8 @@ private:
 // Board class =================================================================
 
 // A Board is implemented as a std::vector< std::vector<char> > whose jth 
-// element encodes
-// exactly which spaces on the jth column of the board are occupied ('o'
-// signifies "occupied" and 'e' signifies "empty").
+// element encodes exactly which spaces on the jth column of the board are 
+// occupied ('o' signifies "occupied" and 'e' signifies "empty").
 
 class Board {
 public:
