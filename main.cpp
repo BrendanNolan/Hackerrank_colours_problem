@@ -23,11 +23,13 @@ int main()
 	// make sure that the first call to Brick::read reads the second line of
 	// infile, rather than whatever follows the first three entries on the first
 	// line of infile
-	char c;
-	while (infile.get(c))
 	{
-		if (c == '\n')
-			break;
+		char c;
+		while (infile.get(c))
+		{
+			if (c == '\n')
+				break;
+		}
 	}
 
 	std::vector<Brick> bricks;
@@ -46,7 +48,7 @@ int main()
 		&twisted_abs_sort_Brick_indices };
 
 
-	// Using the various greedy strategies, add Bricks to the board and record 
+	// Using various greedy strategies, add Bricks to the board and record 
 	// the score and the placement of the Bricks, clearing the board before 
 	// testing a new strategy. Place the paired results in results_vec.
 	std::vector< std::pair< int, std::vector< std::vector<int> > > > 
