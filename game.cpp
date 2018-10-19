@@ -5,6 +5,7 @@
 
 std::istream& Brick::read(std::istream& is) 
 {
+	msp.make_unique();
 	std::string s; 
 	if (std::getline(is, s))
 	{
