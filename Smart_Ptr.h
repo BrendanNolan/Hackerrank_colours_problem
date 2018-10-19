@@ -6,7 +6,6 @@
 
 #include "ctrl_block.h"
 
-
 // Begin definitions of global utility functions -------------------------------
 
 // clone is never called on an unbound pointer, so in the definition of clone, 
