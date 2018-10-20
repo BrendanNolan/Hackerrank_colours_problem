@@ -23,7 +23,6 @@ public:
 	// getter methods
 	int get_value() const;
 	int get_mean() const { return get_value() / size(); }
-	const std::map<int, int>& get_data() const { return *msp; }
 
 	// other methods
 	std::map<int, int>::size_type size() const { return msp->size(); }
