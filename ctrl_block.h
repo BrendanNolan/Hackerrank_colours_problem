@@ -9,7 +9,6 @@ self-updating std::size_t.
 #include <cstdlib>
 #include <stdexcept>
 
-
 // Begin ctrl_block class ======================================================
 
 // Begin ctrl_block class main body --------------------------------------------

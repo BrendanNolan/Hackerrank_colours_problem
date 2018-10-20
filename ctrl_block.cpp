@@ -1,6 +1,5 @@
 #include "ctrl_block.h"
 
-
 // Begin definitions of ctrl_block friends -------------------------------------
 
 bool operator==(const ctrl_block& a, const ctrl_block& b)

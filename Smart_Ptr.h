@@ -14,7 +14,10 @@ template <typename T>
 T* clone(const T* p)
 {
     return p->clone();    
-} 
+}
+
+template <>
+std::map<int, int>* clone(const std::map<int, int>*);
 
 // End definitions of global utility functions ---------------------------------
 
