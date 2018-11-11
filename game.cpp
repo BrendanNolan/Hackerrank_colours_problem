@@ -5,7 +5,16 @@
 
 std::istream& Brick::read(std::istream& is) 
 {
+	/*
+		The call below to the make_unique method points msp at a fresh copy of
+		the map but then immediately points msp somewhere else. 
+		So there was really no point in making the fresh copy of the map. 
+		Perhaps instead of make_unique, it would be better to call a method 
+		called make_null, which would point msp to 0 (we would have to 
+		write this method of course). 
+	*/
 	msp.make_unique();
+	
 	std::string s; 
 	if (std::getline(is, s))
 	{
